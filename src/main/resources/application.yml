@@ -10,7 +10,7 @@ spring:
     gateway:
       routes:
         - id: movies-service-route
-          uri: lb://movies-service
+          uri: lb://ms-movies
           predicates:
             - Path=/movies/**
           metadata:
@@ -19,7 +19,7 @@ spring:
               allowedMethods: "*"
               allowedHeaders: "*"
         - id: search-service-route
-          uri: lb://search-service
+          uri: lb://ms-search
           predicates:
             - Path=/search/**
           metadata:

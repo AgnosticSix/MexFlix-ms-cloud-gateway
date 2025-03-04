@@ -1,0 +1,47 @@
+server:
+  port: 8080
+  servlet:
+    contextPath: /
+
+spring:
+  application:
+    name: ms-cloud-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: movies-service-route
+          uri: lb://movies-service
+          predicates:
+            - Path=/movies/**
+          metadata:
+            cors:
+              allowedOrigins: "*"
+              allowedMethods: "*"
+              allowedHeaders: "*"
+        - id: search-service-route
+          uri: lb://search-service
+          predicates:
+            - Path=/search/**
+          metadata:
+            cors:
+              allowedOrigins: "*"
+              allowedMethods: "*"
+              allowedHeaders: "*"
+
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      metrics:
+        enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL} #http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    hostname: localhost
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
